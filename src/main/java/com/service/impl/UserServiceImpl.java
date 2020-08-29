@@ -2,6 +2,7 @@ package com.service.impl;
 
 import com.dao.UserDao;
 import com.entity.RecordUser;
+import com.entity.User;
 import com.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +21,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int login(String username, String password) {
-        return userDao.login(username, password);
+    public User login(String username, String password) {
+        User user = userDao.findByUsername(username);
+        if (user == null) return null;
+        if (password.equals(user.getPassword()) && user.getDeleted() != 1) return user;
+        return null;
+    }
+
+    @Override
+    public User findById(int userId) {
+        return userDao.findByUserId(userId);
     }
 
     @Override
@@ -56,7 +65,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<RecordUser> findRecord(int userId) {
+    public List<RecordUser> queryRecords(int userId) {
         return userDao.findRecord(userId);
+    }
+
+    @Override
+    public boolean checkUsername(String username) {
+        return userDao.findByUsername(username) == null;
     }
 }

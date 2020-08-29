@@ -2,10 +2,7 @@ package com.dao;
 
 import com.entity.RecordUser;
 import com.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -15,11 +12,7 @@ import java.util.List;
 @Repository
 public interface UserDao {
 
-    @Select("SELECT FROM user WHERE user_type = 1 AND username = #{username} " +
-            "AND password = #{password} AND deleted = 0")
-    int login(@Param("username") String username, @Param("password") String password);
-
-    @Update("UPDATE user SET money = option WHERE user_id = #{user_id}")
+    @Update("UPDATE user SET money = #{option} WHERE user_id = #{user_id}")
     int updateMoney(@Param("user_id") int userId, @Param("option") BigDecimal option);
 
     @Insert("INSERT INTO record_user VALUES(#{user_id}, #{option}, #{time})")
@@ -31,15 +24,26 @@ public interface UserDao {
     @Update("UPDATE user SET deleted = 1 WHERE user_id = #{user_id}")
     int deleteAccount(@Param("user_id") int userId);
 
-    @Insert("INSERT INTO user ('username', 'money') VALUES(#{username}, #{money})")
+    @Insert("INSERT INTO user (username, money) VALUES(#{username}, #{money})")
     int register(@Param("username") String username, @Param("money") BigDecimal money);
 
-    @Select("SELECT FROM user WHERE user_id = #{user_id}")
+    @Select("SELECT money FROM user WHERE user_id = #{user_id}")
     BigDecimal queryMoneyById(@Param("user_id") int userId);
 
     @Select("SELECT * FROM user WHERE username = #{username}")
+    @Results(id = "res1",value = {
+            @Result(id = true, column = "user_id", property = "userId"),
+            @Result(column = "user_type", property = "userType")
+    })
     User findByUsername(@Param("username") String username);
 
+    @Select("SELECT * FROM user WHERE user_id = #{user_id}")
+    @ResultMap(value = "res1")
+    User findByUserId(@Param("user_id") int userId);
+
     @Select("SELECT * FROM record_user WHERE user_id = #{user_id} ORDER BY time DESC")
-    List<RecordUser> findRecord(@Param("username") int userId);
+    @Results(id = "res2", value = {
+            @Result(id = true,column = "user_id",property = "userId")
+    })
+    List<RecordUser> findRecord(@Param("user_id") int userId);
 }

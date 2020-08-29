@@ -57,8 +57,8 @@ public interface AdminService {
     /**
      * 查询记录
      *
-     * @param adminId 用户 id
+     * @param adminId 管理员 id
      * @return 记录列表
      */
-    List<RecordAdmin> queryRecord(int adminId);
+    List<RecordAdmin> queryRecords(int adminId);
 }

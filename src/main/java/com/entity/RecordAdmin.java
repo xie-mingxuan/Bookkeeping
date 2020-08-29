@@ -14,6 +14,7 @@ public class RecordAdmin {
     int userId;
     int optionType;
     int optionId;
+    String optionUsername;
     BigDecimal option;
     Timestamp time;
 }

@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 public class User {
     private int userId;
     private String username;
+    private String password;
     private BigDecimal money;
-    private int user_type;
+    private int userType;
+    private int deleted;
 }

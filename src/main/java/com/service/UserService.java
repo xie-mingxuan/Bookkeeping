@@ -1,6 +1,7 @@
 package com.service;
 
 import com.entity.RecordUser;
+import com.entity.User;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,7 +15,15 @@ public interface UserService {
      * @param password 密码
      * @return 数据库变动行数
      */
-    int login(String username, String password);
+    User login(String username, String password);
+
+    /**
+     * 通过userId查找用户
+     *
+     * @param userId userId
+     * @return 用户
+     */
+    User findById(int userId);
 
     /**
      * 存取钱方法
@@ -57,5 +66,13 @@ public interface UserService {
      * @param userId 用户 id
      * @return 记录列表
      */
-    List<RecordUser> findRecord(int userId);
+    List<RecordUser> queryRecords(int userId);
+
+    /**
+     * 检查 username 是否已经被使用
+     *
+     * @param username 用户名
+     * @return 使用返回 false
+     */
+    boolean checkUsername(String username);
 }
