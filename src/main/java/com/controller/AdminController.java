@@ -1,19 +1,14 @@
 package com.controller;
 
-import com.dao.AdminDao;
-import com.dao.UserDao;
-import com.entity.RecordAdmin;
 import com.entity.RestResp;
 import com.entity.User;
 import com.service.AdminService;
 import com.service.UserService;
 import lombok.AllArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @AllArgsConstructor
 @RestController

@@ -41,12 +41,4 @@ public class RestResp {
     public static RestResp error(String message) {
         return new RestResp(STATUS_ERROR, null, message);
     }
-
-    public static RestResp invalidToken() {
-        return new RestResp(STATUS_INVALID_TOKEN, null, "invalid token");
-    }
-
-    public static RestResp invalidRequest() {
-        return new RestResp(STATUS_INVALID_REQUEST, null, "invalid request");
-    }
 }

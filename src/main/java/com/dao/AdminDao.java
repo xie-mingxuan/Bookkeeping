@@ -1,12 +1,10 @@
 package com.dao;
 
 import com.entity.RecordAdmin;
-import com.entity.RecordUser;
 import com.entity.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
-import javax.xml.validation.Validator;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
