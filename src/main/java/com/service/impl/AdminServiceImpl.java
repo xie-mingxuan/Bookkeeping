@@ -1,7 +1,9 @@
 package com.service.impl;
 
 import com.dao.AdminDao;
+import com.dao.UserDao;
 import com.entity.RecordAdmin;
+import com.entity.User;
 import com.service.AdminService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +26,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public int addUser(int adminId, String username, BigDecimal money) {
-        if (adminDao.findByUsername(username) != null || money.compareTo(new BigDecimal("0.00")) < 0)
-            return 0;
+        if (adminDao.findByUsername(username) != null)
+            return -1;
         adminDao.addUser(username, money);
         int userId = adminDao.findByUsername(username).getUserId();
         return adminDao.addRecord(adminId, ADD_USER, userId, username, money,
@@ -36,7 +38,7 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public int addAdmin(int adminId, String username) {
         if (adminDao.findByUsername(username) != null)
-            return 0;
+            return -1;
         adminDao.addAdmin(username);
         int userId = adminDao.findByUsername(username).getUserId();
         return adminDao.addRecord(adminId, ADD_ADMIN, userId, username, new BigDecimal("0.00"),
@@ -51,13 +53,15 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public int manageMoney(int adminId, int userId, BigDecimal decimal) {
+    public int manageMoney(int adminId, String username, BigDecimal decimal) {
+        User user = adminDao.findByUsername(username);
+        if (user == null) return 0;
+        int userId = user.getUserId();
         BigDecimal money = adminDao.queryMoneyById(userId);
         BigDecimal res = money.add(decimal);
         if (res.compareTo(new BigDecimal("0.00")) < 0)
             return 0;
         adminDao.updateMoney(userId, res);
-        String username = adminDao.findById(userId).getUsername();
         return adminDao.addRecord(adminId, CHANGE_MONEY, userId, username, decimal,
                 new Timestamp(System.currentTimeMillis()));
     }

@@ -24,8 +24,8 @@ public interface AdminDao {
     @Update("UPDATE user SET money = #{option} WHERE user_id = #{user_id}")
     int updateMoney(@Param("user_id") int adminId, @Param("option") BigDecimal decimal);
 
-    @Insert("INSERT INTO record_admin VALUES(#{user_id}, #{option_type}, #{option_id}, #{option_username} #{option}, " +
-            "#{time})")
+    @Insert("INSERT INTO record_admin VALUES(#{user_id}, #{option_type}, #{option_id}, #{option_username}, " +
+            " #{time}, #{option})")
     int addRecord(@Param("user_id") int adminId, @Param("option_type") int optionType,
                   @Param("option_id") int userId, @Param("option_username") String optionUsername,
                   @Param("option") BigDecimal option, @Param("time") Timestamp time);

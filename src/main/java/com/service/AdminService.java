@@ -38,11 +38,11 @@ public interface AdminService {
      * 管理用户账户
      *
      * @param adminId 管理员id
-     * @param userId  账户 id
+     * @param username  账户名
      * @param decimal 变动的钱数
      * @return 数据库变动行数
      */
-    int manageMoney(int adminId, int userId, BigDecimal decimal);
+    int manageMoney(int adminId, String username, BigDecimal decimal);
 
     /**
      * 修改密码

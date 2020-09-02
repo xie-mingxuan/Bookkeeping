@@ -30,6 +30,7 @@ public class AdminController {
                             @RequestParam("username") String username,
                             @RequestParam("decimal") BigDecimal decimal) {
         int res = adminService.addUser(userId, username, decimal);
+        if(res == -1) return RestResp.error("用户名已被注册");
         return res > 0 ? RestResp.ok() : RestResp.error("创建新用户失败");
     }
 
@@ -38,6 +39,7 @@ public class AdminController {
     public RestResp addAdmin(@RequestParam("adminId") int adminId,
                              @RequestParam("username") String username) {
         int res = adminService.addAdmin(adminId, username);
+        if(res == -1) return RestResp.error("用户名已被注册");
         return res > 0 ? RestResp.ok() : RestResp.error("创建新用户失败");
     }
 
@@ -50,9 +52,9 @@ public class AdminController {
     @Transactional
     @PostMapping("/manageMoney")
     public RestResp manageMoney(@RequestParam("adminId") int adminId,
-                                @RequestParam("userId") int userId,
+                                @RequestParam("username") String username,
                                 @RequestParam("decimal") BigDecimal decimal) {
-        int res = adminService.manageMoney(adminId, userId, decimal);
+        int res = adminService.manageMoney(adminId, username, decimal);
         return res > 0 ? RestResp.ok() : RestResp.error("修改失败");
     }
 
