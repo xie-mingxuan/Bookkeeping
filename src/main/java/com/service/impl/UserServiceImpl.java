@@ -37,12 +37,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public int manageMoney(int userId, BigDecimal decimal, String text) {
+    public int manageMoney(int userId, BigDecimal decimal, String explanatory) {
         BigDecimal money = userDao.queryMoneyById(userId);
         BigDecimal res = money.add(decimal);
         if (res.compareTo(new BigDecimal("0.00")) < 0)
             return 0;
-        userDao.addRecord(userId, decimal, new Timestamp(System.currentTimeMillis()), text);
+        userDao.addRecord(userId, decimal, new Timestamp(System.currentTimeMillis()), explanatory);
         return userDao.updateMoney(userId, res);
     }
 

@@ -39,8 +39,8 @@ public class UserController {
     @PostMapping("/manageMoney")
     public RestResp manageMoney(@RequestParam("userId") int userId,
                                 @RequestParam("decimal") BigDecimal decimal,
-                                @RequestParam("text") String text) {
-        int res = userService.manageMoney(userId, decimal, text);
+                                @RequestParam("explanatory") String explanatory) {
+        int res = userService.manageMoney(userId, decimal, explanatory);
         return res > 0 ? RestResp.ok() : RestResp.error("余额变动失败");
     }
 

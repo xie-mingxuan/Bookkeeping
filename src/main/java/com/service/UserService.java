@@ -28,12 +28,12 @@ public interface UserService {
     /**
      * 存取钱方法
      *
-     * @param userId  用户 id
-     * @param decimal 存取钱数目
-     * @param text    备注文档
+     * @param userId      用户 id
+     * @param decimal     存取钱数目
+     * @param explanatory 备注文档
      * @return 数据库变动行数
      */
-    int manageMoney(int userId, BigDecimal decimal, String text);
+    int manageMoney(int userId, BigDecimal decimal, String explanatory);
 
     /**
      * 删除账户方法
