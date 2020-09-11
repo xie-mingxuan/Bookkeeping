@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
+import static com.ComputeMD5.encryptPassword;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
     public User login(String username, String password) {
         User user = userDao.findByUsername(username);
         if (user == null) return null;
-        if (password.equals(user.getPassword()) && user.getDeleted() != 1) return user;
+        if (encryptPassword(password).equals(user.getPassword()) && user.getDeleted() != 1) return user;
         return null;
     }
 
@@ -35,12 +37,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public int manageMoney(int userId, BigDecimal decimal) {
+    public int manageMoney(int userId, BigDecimal decimal, String text) {
         BigDecimal money = userDao.queryMoneyById(userId);
         BigDecimal res = money.add(decimal);
         if (res.compareTo(new BigDecimal("0.00")) < 0)
             return 0;
-        userDao.addRecord(userId, decimal, new Timestamp(System.currentTimeMillis()));
+        userDao.addRecord(userId, decimal, new Timestamp(System.currentTimeMillis()), text);
         return userDao.updateMoney(userId, res);
     }
 
@@ -53,15 +55,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public int register(String username, BigDecimal money) {
-        if (userDao.findByUsername(username) == null)
-            return userDao.register(username, money);
+        if (userDao.findByUsername(username) == null) {
+            int res = userDao.register(username, money);
+            changePassword(userDao.findIdByUsername(username), encryptPassword("123456"));
+            return res;
+        }
         return 0;
     }
 
     @Override
     @Transactional
     public int changePassword(int userId, String password) {
-        return userDao.changePassword(userId, password);
+        String encryptedPassword = encryptPassword(password);
+        return userDao.changePassword(userId, encryptedPassword);
     }
 
     @Override

@@ -15,8 +15,9 @@ public interface UserDao {
     @Update("UPDATE user SET money = #{option} WHERE user_id = #{user_id}")
     int updateMoney(@Param("user_id") int userId, @Param("option") BigDecimal option);
 
-    @Insert("INSERT INTO record_user VALUES(#{user_id}, #{option}, #{time})")
-    int addRecord(@Param("user_id") int userId, @Param("option") BigDecimal option, @Param("time") Timestamp time);
+    @Insert("INSERT INTO record_user VALUES(#{user_id}, #{option}, #{time}, #{text})")
+    int addRecord(@Param("user_id") int userId, @Param("option") BigDecimal option, @Param("time") Timestamp time,
+                  @Param("text") String text);
 
     @Update("UPDATE user SET password = #{new_password} WHERE user_id = #{user_id}")
     int changePassword(@Param("user_id") int userId, @Param("new_password") String newPassword);
@@ -31,7 +32,7 @@ public interface UserDao {
     BigDecimal queryMoneyById(@Param("user_id") int userId);
 
     @Select("SELECT * FROM user WHERE username = #{username}")
-    @Results(id = "res1",value = {
+    @Results(id = "res1", value = {
             @Result(id = true, column = "user_id", property = "userId"),
             @Result(column = "user_type", property = "userType")
     })
@@ -41,9 +42,12 @@ public interface UserDao {
     @ResultMap(value = "res1")
     User findByUserId(@Param("user_id") int userId);
 
+    @Select("SELECT user_id FROM user WHERE username = #{username}")
+    int findIdByUsername(@Param("username") String username);
+
     @Select("SELECT * FROM record_user WHERE user_id = #{user_id} ORDER BY time DESC")
     @Results(id = "res2", value = {
-            @Result(id = true,column = "user_id",property = "userId")
+            @Result(id = true, column = "user_id", property = "userId")
     })
     List<RecordUser> findRecord(@Param("user_id") int userId);
 }

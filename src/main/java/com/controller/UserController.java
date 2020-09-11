@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
+import static com.ComputeMD5.encryptPassword;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/user")
@@ -36,8 +38,9 @@ public class UserController {
     @Transactional
     @PostMapping("/manageMoney")
     public RestResp manageMoney(@RequestParam("userId") int userId,
-                                @RequestParam("decimal") BigDecimal decimal) {
-        int res = userService.manageMoney(userId, decimal);
+                                @RequestParam("decimal") BigDecimal decimal,
+                                @RequestParam("text") String text) {
+        int res = userService.manageMoney(userId, decimal, text);
         return res > 0 ? RestResp.ok() : RestResp.error("余额变动失败");
     }
 
@@ -53,7 +56,7 @@ public class UserController {
                                    @RequestParam("password") String password,
                                    @RequestParam("newPassword") String newPassword) {
         User user = userService.findById(userId);
-        if(!password.equals(user.getPassword())) return RestResp.error("原密码输入不正确");
+        if (!encryptPassword(password).equals(user.getPassword())) return RestResp.error("原密码输入不正确");
         return userService.changePassword(userId, newPassword) > 0 ? RestResp.ok() : RestResp.error("修改失败");
     }
 

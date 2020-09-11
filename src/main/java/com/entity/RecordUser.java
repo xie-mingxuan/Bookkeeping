@@ -14,4 +14,5 @@ public class RecordUser {
     private int userId;
     private BigDecimal option;
     private Timestamp time;
+    private String text;
 }

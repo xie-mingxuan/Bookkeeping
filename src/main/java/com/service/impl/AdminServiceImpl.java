@@ -1,7 +1,7 @@
 package com.service.impl;
 
+import com.ComputeMD5;
 import com.dao.AdminDao;
-import com.dao.UserDao;
 import com.entity.RecordAdmin;
 import com.entity.User;
 import com.service.AdminService;
@@ -69,7 +69,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public int changePassword(int adminId, String password) {
-        return adminDao.changePassword(adminId, password);
+        String encryptedPassword = ComputeMD5.encryptPassword(password);
+        return adminDao.changePassword(adminId, encryptedPassword);
     }
 
     @Override
