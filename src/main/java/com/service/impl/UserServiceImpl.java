@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     public int register(String username, BigDecimal money) {
         if (userDao.findByUsername(username) == null) {
             int res = userDao.register(username, money);
-            changePassword(userDao.findIdByUsername(username), encryptPassword("123456"));
+            changePassword(userDao.findIdByUsername(username), "123456");
             return res;
         }
         return 0;
